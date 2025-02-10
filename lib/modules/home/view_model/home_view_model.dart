@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fooddelivery/core/functions/app_functions.dart';
 import 'package:fooddelivery/main.dart';
@@ -12,22 +13,44 @@ class HomeViewModel extends ChangeNotifier {
 
   String searchText = '';
   LatLng? userLatLng;
-  int retry = 0;
+  List<String> offersImages = [];
+  bool isLoading = false;
 
   Future<void> homeInit(BuildContext context) async {
-    await appSettingService.setAppSettings();
     setStatusBarColor(
       context.scaffoldBackgroundColor,
       statusBarIconBrightness:
           appStore.isDarkMode ? Brightness.light : Brightness.dark,
     );
-
+    await appSettingService.setAppSettings();
+    await getOffersImages();
     try {
       AppFunctions.getCurrentPosition(context);
     } catch (e) {
       debugPrint("Error getting location: $e");
       toast('Error getting location: $e');
     }
+  }
+
+  _updateLoading(bool value) {
+    isLoading = value;
+    notifyListeners();
+  }
+
+  getOffersImages() async {
+    _updateLoading(true);
+    CollectionReference offersCollection =
+        FirebaseFirestore.instance.collection('offers');
+
+    QuerySnapshot querySnapshot = await offersCollection.get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      var doc = querySnapshot.docs.first;
+      List<dynamic> offersArray = doc['offers'];
+      offersImages = offersArray.map((item) => item.toString()).toList();
+    }
+    _updateLoading(false);
+    notifyListeners();
   }
 
   void setSearchText(String text) {

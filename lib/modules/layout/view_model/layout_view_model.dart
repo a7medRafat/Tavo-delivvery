@@ -24,19 +24,21 @@ class LayoutViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> init(context) async {
+  Future<void> init(BuildContext context) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      int themeModeIndex = getIntAsync(THEME_MODE_INDEX);
 
-    int themeModeIndex = getIntAsync(THEME_MODE_INDEX);
-    if (themeModeIndex == ThemeModeSystem) {
-      appStore.setDarkMode(context.platformBrightness() == Brightness.dark);
-    }
-    // ignore: deprecated_member_use
-    window.onPlatformBrightnessChanged = () {
-      if (getIntAsync(THEME_MODE_INDEX) == ThemeModeSystem) {
-        appStore.setDarkMode(
-            MediaQuery.of(context).platformBrightness == Brightness.light);
+      if (themeModeIndex == ThemeModeSystem) {
+        appStore.setDarkMode(MediaQuery.of(context).platformBrightness == Brightness.dark);
       }
-    };
+
+      // ignore: deprecated_member_use
+      window.onPlatformBrightnessChanged = () {
+        if (getIntAsync(THEME_MODE_INDEX) == ThemeModeSystem) {
+          appStore.setDarkMode(MediaQuery.of(context).platformBrightness == Brightness.dark);
+        }
+      };
+    });
   }
 
 }

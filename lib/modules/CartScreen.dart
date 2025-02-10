@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:fooddelivery/components/CartItemComponent.dart';
 import 'package:fooddelivery/config/colors/app_colors.dart';
+import 'package:fooddelivery/config/style/app_fonts.dart';
+import 'package:fooddelivery/core/shared_widgets/app_bar.dart';
 import 'package:fooddelivery/models/MenuModel.dart';
 import 'package:fooddelivery/utils/Colors.dart';
 import 'package:fooddelivery/utils/Constants.dart';
@@ -57,11 +59,9 @@ class CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.scaffoldColor,
-      appBar: appBarWidget(
-        appStore.translate('cart'),
-        color: appStore.isDarkMode ? scaffoldColorDark : colorPrimary,
-        textColor: whiteColor,
-      ),
+      appBar: MyAppBar(
+          title: Text(appStore.translate('cart'),
+              style: AppFonts.headline1.copyWith(color: AppColors.darkGray))),
       body: Stack(
         children: [
           StreamBuilder<List<MenuModel>>(

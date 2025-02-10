@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/core/utils/titles.dart';
+import 'package:fooddelivery/modules/home/view/widgets/banners.dart';
 import 'package:fooddelivery/modules/home/view/widgets/home_category.dart';
 import 'package:fooddelivery/modules/home/view/widgets/home_resturants.dart';
 import 'package:fooddelivery/modules/home/view/widgets/home_search.dart';
@@ -22,20 +23,20 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const UserNameImageAddress(),
+            // const UserNameImageAddress(),
+            const Banners(),
             const HomeSearch(),
             20.height,
-            const AppTitle(text: 'categories').visible(viewModel.searchText.isEmpty),
+            const AppTitle(text: 'categories')
+                .visible(viewModel.searchText.isEmpty),
             HomeCategory(viewModel: viewModel),
             10.height,
-            const AppTitle(text: 'restaurants').visible(viewModel.searchText.isEmpty),
+            const AppTitle(text: 'restaurants')
+                .visible(viewModel.searchText.isEmpty),
             HomeRestaurants(viewModel: viewModel)
           ],
         ),
       ),
     );
   }
-
-
-
 }

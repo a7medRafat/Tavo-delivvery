@@ -25,7 +25,7 @@ class SalomonBottomNav extends StatelessWidget {
         items: [
           SalomonBottomBarItem(
             icon: const Icon(Icons.home, size: 20),
-            title:  Text(appStore.translate('home')),
+            title: Text(appStore.translate('home')),
           ),
           SalomonBottomBarItem(
             icon: const Icon(Icons.shopping_cart_rounded, size: 20),
