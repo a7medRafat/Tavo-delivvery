@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "76611240102",
+    "project_id": "mighty-food-cb139",
+    "storage_bucket": "mighty-food-cb139.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:76611240102:android:b1c46e94b7c5ec6b61f467",
+        "android_client_info": {
+          "package_name": "com.example.fooddelivery"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1_EBvRI4wK-MRM5wtg8Ksf6VBFvQbPR0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
