@@ -5,7 +5,6 @@ import 'package:fooddelivery/config/style/app_fonts.dart';
 import 'package:fooddelivery/core/shared_widgets/app_bar.dart';
 import 'package:fooddelivery/main.dart';
 import 'package:fooddelivery/models/RestaurantModel.dart';
-import 'package:fooddelivery/utils/Constants.dart';
 import 'package:fooddelivery/utils/Widgets.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -29,8 +28,7 @@ class RestaurantByCategoryScreen extends StatelessWidget {
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: StreamBuilder<List<RestaurantModel>>(
-              stream: restaurantDBService.restaurantByCategory(catName,
-                  cityName: getStringAsync(USER_CITY_NAME)),
+              stream: restaurantDBService.restaurantByCategory(catName),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return Text(snapshot.error.toString()).center();

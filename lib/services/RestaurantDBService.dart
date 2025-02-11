@@ -3,7 +3,6 @@ import 'package:fooddelivery/models/RestaurantModel.dart';
 import 'package:fooddelivery/services/BaseService.dart';
 import 'package:fooddelivery/utils/Constants.dart';
 import 'package:fooddelivery/utils/ModalKeys.dart';
-import 'package:nb_utils/nb_utils.dart';
 
 import '../main.dart';
 
@@ -13,31 +12,53 @@ class RestaurantDBService extends BaseService {
   }
 
   Stream<List<RestaurantModel>> restaurants({required String searchText}) {
-    return restaurantsQuery(searchText: searchText).snapshots().map((x) => x.docs.map((y) => RestaurantModel.fromJson(y.data() as Map<String, dynamic>)).toList());
+    return restaurantsQuery(searchText: searchText).snapshots().map(
+        (snapshot) => snapshot.docs
+            .map((doc) =>
+                RestaurantModel.fromJson(doc.data() as Map<String, dynamic>))
+            .toList());
   }
 
   Query restaurantsQuery({String searchText = ''}) {
-    print("step0-->${getStringAsync(USER_CITY_NAME)}");
-    return searchText.isNotEmpty
-        ? ref.where(RestaurantKeys.caseSearch, arrayContains: searchText.toLowerCase()).where(RestaurantKeys.restaurantCity, isEqualTo: getStringAsync(USER_CITY_NAME)).where(CommonKeys.isDeleted, isEqualTo: false)
-        : ref.where(RestaurantKeys.restaurantCity, isEqualTo: getStringAsync(USER_CITY_NAME)).where(CommonKeys.isDeleted, isEqualTo: false);
+    Query query = ref.where(CommonKeys.isDeleted, isEqualTo: false);
+
+    if (searchText.isNotEmpty) {
+      query = query.where(RestaurantKeys.caseSearch,
+          arrayContains: searchText.toLowerCase());
+    }
+
+    return query;
   }
 
-  Stream<List<RestaurantModel>> restaurantByCategory(String? categoryName, {String? searchText, String? cityName}) {
-    return ref
+  Stream<List<RestaurantModel>> restaurantByCategory(String? categoryName,
+      {String? searchText}) {
+    Query query = ref
         .where(RestaurantKeys.catList, arrayContains: categoryName)
-        .where(RestaurantKeys.restaurantCity, isEqualTo: cityName)
-        .where(CommonKeys.isDeleted, isEqualTo: false)
-        .snapshots()
-        .map((x) => x.docs.map((y) => RestaurantModel.fromJson(y.data() as Map<String, dynamic>)).toList());
+        .where(CommonKeys.isDeleted, isEqualTo: false);
+
+    if (searchText != null && searchText.isNotEmpty) {
+      query = query.where(RestaurantKeys.caseSearch,
+          arrayContains: searchText.toLowerCase());
+    }
+
+    return query.snapshots().map((snapshot) => snapshot.docs
+        .map((doc) =>
+            RestaurantModel.fromJson(doc.data() as Map<String, dynamic>))
+        .toList());
   }
 
   Future<List<RestaurantModel>> getFavRestaurantList() async {
     if (favRestaurantList.isNotEmpty) {
-      Query query = ref.where(CommonKeys.id, whereIn: favRestaurantList).where(CommonKeys.isDeleted, isEqualTo: false).orderBy(CommonKeys.updatedAt, descending: true);
+      Query query = ref
+          .where(CommonKeys.id, whereIn: favRestaurantList)
+          .where(CommonKeys.isDeleted, isEqualTo: false)
+          .orderBy(CommonKeys.updatedAt, descending: true);
 
       return await query.get().then((x) {
-        return x.docs.map((y) => RestaurantModel.fromJson(y.data() as Map<String, dynamic>)).toList();
+        return x.docs
+            .map((y) =>
+                RestaurantModel.fromJson(y.data() as Map<String, dynamic>))
+            .toList();
       });
     } else {
       return [];
@@ -45,11 +66,15 @@ class RestaurantDBService extends BaseService {
   }
 
   Future<RestaurantModel> getRestaurantById({String? restaurantId}) async {
-    return await ref.where(CommonKeys.id, isEqualTo: restaurantId).get().then((res) {
+    return await ref
+        .where(CommonKeys.id, isEqualTo: restaurantId)
+        .get()
+        .then((res) {
       if (res.docs.isEmpty) {
         throw appStore.translate('noRestaurantFound');
       } else {
-        return RestaurantModel.fromJson(res.docs.first.data() as Map<String, dynamic>);
+        return RestaurantModel.fromJson(
+            res.docs.first.data() as Map<String, dynamic>);
       }
     }).catchError((error) {
       throw error.toString();

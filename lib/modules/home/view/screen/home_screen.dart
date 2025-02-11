@@ -4,7 +4,6 @@ import 'package:fooddelivery/modules/home/view/widgets/banners.dart';
 import 'package:fooddelivery/modules/home/view/widgets/home_category.dart';
 import 'package:fooddelivery/modules/home/view/widgets/home_resturants.dart';
 import 'package:fooddelivery/modules/home/view/widgets/home_search.dart';
-import 'package:fooddelivery/modules/home/view/widgets/user_name_image_address.dart';
 import 'package:fooddelivery/modules/home/view_model/home_view_model.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';

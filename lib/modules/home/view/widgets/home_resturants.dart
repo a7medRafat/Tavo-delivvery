@@ -15,10 +15,9 @@ class HomeRestaurants extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (viewModel.searchText.isNotEmpty &&
-        getStringAsync(USER_CITY_NAME).isNotEmpty) {
+    if (viewModel.searchText.isNotEmpty){
       return _buildSearchResults(context, viewModel);
-    } else if (getStringAsync(USER_CITY_NAME).isNotEmpty) {
+    } else if (viewModel.searchText.isEmpty) {
       return _buildPaginatedRestaurantList(context, viewModel);
     } else {
       return _buildNoRestaurantFound();
