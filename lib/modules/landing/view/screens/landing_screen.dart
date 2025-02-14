@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/config/colors/app_colors.dart';
 import 'package:fooddelivery/config/style/app_fonts.dart';
 import 'package:fooddelivery/core/extentions/navigation.dart';
-import 'package:fooddelivery/core/shared_widgets/app_bar.dart';
 import 'package:fooddelivery/modules/landing/view/widgets/onboarding_items.dart';
 import 'package:fooddelivery/modules/landing/view_model/landing_view_model.dart';
 import 'package:fooddelivery/modules/layout/view/layout_screen.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 
 class LandingScreen extends StatelessWidget {
@@ -17,41 +18,46 @@ class LandingScreen extends StatelessWidget {
       create: (_) => LandingViewModel(),
       child: Scaffold(
         backgroundColor: AppColors.whiteColor,
-        appBar: MyAppBar(
-          backColor: Colors.transparent,
-          isCenter: true,
-          title: Text(
-            "Tavo Delivery",
-            style: AppFonts.headline1.copyWith(
-              color: AppColors.primaryColor,
-              fontSize: 23
-            ),
-          ),
-        ),
-        body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Consumer<LandingViewModel>(
-            builder:
-                (BuildContext context, LandingViewModel value, Widget? child) {
-              return SizedBox(
-                height: MediaQuery.of(context).size.height / 1.5,
-                child: PageView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  controller: value.pageController,
-                  itemCount: value.boardingImages.length,
-                  onPageChanged: (page) => value.updatePage(page),
-                  scrollDirection: Axis.horizontal,
-                  reverse: true,
-                  itemBuilder: (BuildContext context, int index) {
-                    return OnboardingItems(
-                      imageName: value.boardingImages[index],
-                      title: value.boardingTitles[index],
-                    );
+        body: Consumer<LandingViewModel>(
+          builder:
+              (BuildContext context, LandingViewModel value, Widget? child) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height - 200.h,
+                  child: PageView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    controller: value.pageController,
+                    itemCount: value.boardingImages.length,
+                    onPageChanged: (page) => value.updatePage(page),
+                    scrollDirection: Axis.horizontal,
+                    reverse: true,
+                    itemBuilder: (BuildContext context, int index) {
+                      return OnboardingItems(
+                        imageName: value.boardingImages[index],
+                        title: value.boardingTitles[index],
+                      );
+                    },
+                  ),
+                ),
+                40.height,
+                DotIndicator(
+                  indicatorColor: errorColor,
+                  pageController: value.pageController,
+                  pages: value.boardingImages,
+                  unselectedIndicatorColor: Colors.grey,
+                  onPageChanged: (i) {
+                    value.currentPage = i;
                   },
                 ),
-              );
-            },
-          ),
+              ],
+            );
+          },
         ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () => context.goAndRemoveAll(screen: const AppLayout()),

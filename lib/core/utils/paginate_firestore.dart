@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fooddelivery/main.dart';
+import 'package:fooddelivery/utils/Widgets.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:paginate_firestore/paginate_firestore.dart';
 
@@ -41,12 +43,9 @@ class GenericPaginateFireStore<T> extends StatelessWidget {
       onEmpty: SizedBox(
         width: context.width(),
         height: context.height() * 0.75,
-        child: const Center(
-          child: Text(
-            'No Data Found',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-        ),
+        child: noDataWidget(
+          errorMessage: appStore.translate('noDataFound'),
+        ).center(),
       ),
       onError: (e) => Center(
         child: Text(

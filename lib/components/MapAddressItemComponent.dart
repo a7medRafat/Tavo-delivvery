@@ -13,6 +13,8 @@ import '../main.dart';
 class MapAddressItemComponent extends StatefulWidget {
   static String tag = '/MapAddressItemComponent';
   TextEditingController? addressController;
+  TextEditingController? otherDetailsController;
+
   double? deliveryUserLat;
   double? deliveryUserLong;
   bool? isUpdate;
@@ -20,6 +22,7 @@ class MapAddressItemComponent extends StatefulWidget {
   MapAddressItemComponent(
       {super.key,
       this.addressController,
+      this.otherDetailsController,
       this.deliveryUserLong,
       this.deliveryUserLat,
       this.isUpdate});
@@ -30,8 +33,6 @@ class MapAddressItemComponent extends StatefulWidget {
 
 class MapAddressItemComponentState extends State<MapAddressItemComponent> {
   var formKey = GlobalKey<FormState>();
-
-  TextEditingController otherDetailsController = TextEditingController();
 
   FocusNode addressFocus = FocusNode();
   FocusNode otherDetailsFocus = FocusNode();
@@ -77,7 +78,7 @@ class MapAddressItemComponentState extends State<MapAddressItemComponent> {
       listOfAddress.add(
         AddressModel(
           address: widget.addressController!.text,
-          otherDetails: otherDetailsController.text,
+          otherDetails: widget.otherDetailsController!.text,
           userLocation:
               GeoPoint(widget.deliveryUserLat ?? 0.0 , widget.deliveryUserLong ?? 0.0),
         ),
@@ -138,7 +139,7 @@ class MapAddressItemComponentState extends State<MapAddressItemComponent> {
                   16.height,
                   AppTextField(
                     textStyle: primaryTextStyle(),
-                    controller: otherDetailsController,
+                    controller: widget.otherDetailsController,
                     textFieldType: TextFieldType.ADDRESS,
                     maxLines: 4,
                     autoFocus: false,

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:fooddelivery/components/AddressListComponent.dart';
+import 'package:fooddelivery/core/shared_widgets/toast.dart';
 import 'package:fooddelivery/models/UserModel.dart';
-import 'package:fooddelivery/modules/MapAddressScreen.dart';
+import 'package:fooddelivery/modules/my_address/view/screen/MapAddressScreen.dart';
 import 'package:fooddelivery/utils/Colors.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:fooddelivery/utils/functions.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../main.dart';
@@ -14,7 +15,7 @@ class MyAddressScreen extends StatefulWidget {
   static String tag = '/MyAddressScreen';
   bool? isOrder = false;
 
-  MyAddressScreen({this.isOrder});
+  MyAddressScreen({super.key, this.isOrder});
 
   @override
   MyAddressScreenState createState() => MyAddressScreenState();
@@ -23,6 +24,7 @@ class MyAddressScreen extends StatefulWidget {
 class MyAddressScreenState extends State<MyAddressScreen> {
   double? userLatitude;
   double? userLongitude;
+  TextEditingController addressController = TextEditingController();
 
   @override
   void initState() {
@@ -31,13 +33,25 @@ class MyAddressScreenState extends State<MyAddressScreen> {
   }
 
   Future<void> init() async {
-    getCurrentUserLocation();
+    await getCurrentUserLocation();
   }
 
   Future<void> getCurrentUserLocation() async {
-    final geoPosition = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    userLatitude = geoPosition.latitude;
-    userLongitude = geoPosition.longitude;
+    try {
+      final geoPosition = await AppFunctions.getCurrentPosition(context);
+      if (geoPosition != null) {
+        userLatitude = geoPosition.latitude;
+        userLongitude = geoPosition.longitude;
+      } else {
+        MyToast.show(
+          text: 'Unable to fetch current location. Please try again.',
+          context: context,
+        );
+      }
+    } catch (e) {
+      // ignore: use_build_context_synchronously
+      MyToast.show(text: 'Error fetching location: $e', context: context);
+    }
   }
 
   @override
@@ -49,21 +63,19 @@ class MyAddressScreenState extends State<MyAddressScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: appBarWidget(appStore.translate('my_address'), color: context.cardColor),
+        appBar: appBarWidget(appStore.translate('my_address'),
+            color: context.cardColor),
         body: SingleChildScrollView(
           child: Column(
             children: [
               SettingItemWidget(
-                padding: EdgeInsets.only(top: 16, right: 16, left: 16, bottom: 8),
-                leading: Icon(Icons.add, color: colorPrimary),
+                padding: const EdgeInsets.only(
+                    top: 16, right: 16, left: 16, bottom: 8),
+                leading: const Icon(Icons.add, color: colorPrimary),
                 title: appStore.translate('add_address'),
                 titleTextStyle: primaryTextStyle(color: colorPrimary),
                 onTap: () async {
-                  if (userLatitude != null) {
-                    MapAddressScreen(userLatitude: userLatitude, userLongitude: userLongitude).launch(context);
-                  } else {
-                    getCurrentUserLocation();
-                  }
+                  const MapAddressScreen().launch(context);
                 },
               ),
               Stack(
@@ -72,13 +84,16 @@ class MyAddressScreenState extends State<MyAddressScreen> {
                     stream: userDBService.userById(appStore.userId),
                     builder: (_, snap) {
                       if (snap.hasData) {
-                        return AddressListComponent(userData: snap.data, isOrder: widget.isOrder);
+                        return AddressListComponent(
+                            userData: snap.data, isOrder: widget.isOrder);
                       } else {
                         return snapWidgetHelper(snap);
                       }
                     },
                   ),
-                  Observer(builder: (_) => Loader().center().visible(appStore.isLoading)),
+                  Observer(builder: (_) {
+                    return Loader().center().visible(appStore.isLoading);
+                  }),
                 ],
               ),
             ],

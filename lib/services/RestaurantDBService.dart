@@ -80,4 +80,20 @@ class RestaurantDBService extends BaseService {
       throw error.toString();
     });
   }
+
+  Future<void> updateRestaurantDate(
+      {required String restaurantId, required String voucherCount}) async {
+    try {
+      final docRef = ref.doc(restaurantId);
+      final docSnapshot = await docRef.get();
+
+      if (docSnapshot.exists) {
+        await docRef.update({
+          'voucherCount': voucherCount,
+        });
+      }
+    } catch (e) {
+      print("Error updating restaurant date: $e");
+    }
+  }
 }

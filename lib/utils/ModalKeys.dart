@@ -44,8 +44,8 @@ class RestaurantKeys {
   static String isVegRestaurant = 'isVegRestaurant';
   static String isNonVegRestaurant = 'isNonVegRestaurant';
   static String isDealOfTheDay = 'isDealOfTheDay';
-  static String couponCode = 'couponCode';
-  static String couponDesc = 'couponDesc';
+  static String voucher = 'voucher';
+  static String voucherCount = 'voucherCount';
   static String caseSearch = 'caseSearch';
   static String restaurantDesc = 'restaurantDesc';
   static String catList = 'catList';

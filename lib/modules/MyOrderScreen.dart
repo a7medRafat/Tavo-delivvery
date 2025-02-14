@@ -10,12 +10,13 @@ import 'package:fooddelivery/utils/Constants.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+// ignore: must_be_immutable
 class MyOrderScreen extends StatefulWidget {
   static String tag = '/MyOrderScreen';
 
   String? orderAddress;
 
-  MyOrderScreen({this.orderAddress});
+  MyOrderScreen({super.key, this.orderAddress});
 
   @override
   MyOrderScreenState createState() => MyOrderScreenState();
@@ -28,6 +29,8 @@ class MyOrderScreenState extends State<MyOrderScreen> {
   double? userLatitude;
   double? userLongitude;
   bool? isOrder;
+  double voucher = 0.0;
+  Set<String> processedRestaurantIds = {};
   String address = "";
 
   @override
@@ -37,17 +40,30 @@ class MyOrderScreenState extends State<MyOrderScreen> {
   }
 
   Future<void> init() async {
+    for (var e in appStore.mCartList) {
+      if (!processedRestaurantIds.contains(e!.restaurantId)) {
+        final res = await restaurantDBService.getRestaurantById(
+            restaurantId: e.restaurantId);
+
+        if (res.voucher != null) {
+          voucher += res.voucher!.toDouble();
+          processedRestaurantIds.add(e.restaurantId!);
+        }
+      }
+    }
+
     calculateTotal();
     getCurrentUserLocation();
-
     setStatusBarColor(
       appStore.isDarkMode ? scaffoldColorDark : colorPrimary,
-      statusBarIconBrightness: appStore.isDarkMode ? Brightness.light : Brightness.dark,
+      statusBarIconBrightness:
+          appStore.isDarkMode ? Brightness.light : Brightness.dark,
     );
   }
 
   getCurrentUserLocation() async {
-    final geoPosition = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    final geoPosition = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
     setState(() {
       userLatitude = geoPosition.longitude;
       userLongitude = geoPosition.latitude;
@@ -55,7 +71,9 @@ class MyOrderScreenState extends State<MyOrderScreen> {
   }
 
   void calculateTotal() {
-    totalAmount = appStore.mCartList.sumBy(((e) => e!.itemPrice! * e.qty!)) + getIntAsync(DELIVERY_CHARGES);
+    totalAmount = appStore.mCartList.sumBy(((e) => e!.itemPrice! * e.qty!)) +
+        getIntAsync(DELIVERY_CHARGES) -
+        voucher.toInt();
     setState(() {});
   }
 
@@ -63,7 +81,8 @@ class MyOrderScreenState extends State<MyOrderScreen> {
   void dispose() {
     setStatusBarColor(
       appStore.isDarkMode ? scaffoldColorDark : colorPrimary,
-      statusBarIconBrightness: appStore.isDarkMode ? Brightness.light : Brightness.dark,
+      statusBarIconBrightness:
+          appStore.isDarkMode ? Brightness.light : Brightness.dark,
     );
     super.dispose();
   }
@@ -77,7 +96,10 @@ class MyOrderScreenState extends State<MyOrderScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: appBarWidget(appStore.translate('checkout'), color: appStore.isDarkMode ? scaffoldColorDark : colorPrimary, textColor: white, showBack: true),
+        appBar: appBarWidget(appStore.translate('checkout'),
+            color: appStore.isDarkMode ? scaffoldColorDark : colorPrimary,
+            textColor: white,
+            showBack: true),
         body: Column(
           children: [
             MyOrderUserInfoComponent(isOrder: true),
@@ -87,7 +109,9 @@ class MyOrderScreenState extends State<MyOrderScreen> {
                 itemCount: appStore.mCartList.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  return MyOrderListItemComponent(myOrderData: appStore.mCartList[index]);
+                  return MyOrderListItemComponent(
+                    myOrderData: appStore.mCartList[index],
+                  );
                 },
               ).expand(),
             ),
@@ -98,6 +122,7 @@ class MyOrderScreenState extends State<MyOrderScreen> {
           userLatitude: userLatitude,
           userLongitude: userLongitude,
           orderAddress: address,
+          voucher: voucher.toString(),
           isOrder: true,
           onPlaceOrder: () {
             setState(() {});

@@ -1,1 +1,17 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"mighty-food-cb139","appId":"1:76611240102:android:b1c46e94b7c5ec6b61f467","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"mighty-food-cb139","configurations":{"android":"1:76611240102:android:b1c46e94b7c5ec6b61f467","ios":"1:76611240102:ios:331d09f0a49c942661f467","macos":"1:76611240102:ios:331d09f0a49c942661f467","web":"1:76611240102:web:b977fb0781cdf00b61f467","windows":"1:76611240102:web:9e878f8d32a4473b61f467"}}}}}}
+{
+  "hosting": {
+    "public": "build/web",
+    "site": "tavo-ios-102c",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

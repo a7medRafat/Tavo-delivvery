@@ -11,7 +11,7 @@ class MyToast {
       textStyle: TextStyle(fontSize: 12, color: AppColors.scaffoldColor),
       animation: StyledToastAnimation.scale,
       reverseAnimation: StyledToastAnimation.slideFromBottomFade,
-      position: StyledToastPosition.top,
+      position: StyledToastPosition.bottom,
       animDuration: const Duration(seconds: 1),
       duration: const Duration(seconds: 4),
       curve: Curves.elasticOut,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:fooddelivery/components/ThemeSelectionDialog.dart';
-import 'package:fooddelivery/modules/AboutAppScreen.dart';
 import 'package:fooddelivery/modules/MyAddressScreen.dart';
 import 'package:fooddelivery/services/AuthService.dart';
 import 'package:fooddelivery/utils/Common.dart';
@@ -70,8 +69,10 @@ class ProfileFragmentState extends State<ProfileFragment> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(appStore.userFullName.validate(), style: boldTextStyle()),
-                      Text(appStore.userEmail.validate(), style: secondaryTextStyle()),
+                      Text(appStore.userFullName.validate(),
+                          style: boldTextStyle()),
+                      Text(appStore.userEmail.validate(),
+                          style: secondaryTextStyle()),
                     ],
                   ),
                 ],
@@ -88,7 +89,8 @@ class ProfileFragmentState extends State<ProfileFragment> {
                     context,
                     child: ThemeSelectionDialog(),
                     contentPadding: EdgeInsets.zero,
-                    title: Text(appStore.translate('select_theme'), style: primaryTextStyle(size: 20)),
+                    title: Text(appStore.translate('select_theme'),
+                        style: primaryTextStyle(size: 20)),
                   );
                   setState(() {});
                 },
@@ -101,7 +103,7 @@ class ProfileFragmentState extends State<ProfileFragment> {
                   if (appStore.isLoggedIn) {
                     FavouriteRestaurantListScreen().launch(context);
                   } else {
-                    LoginScreen().launch(context);
+                    const LoginScreen().launch(context);
                   }
                 },
               ),
@@ -113,7 +115,7 @@ class ProfileFragmentState extends State<ProfileFragment> {
                   if (appStore.isLoggedIn) {
                     MyAddressScreen().launch(context);
                   } else {
-                    LoginScreen().launch(context);
+                    const LoginScreen().launch(context);
                   }
                 },
               ),
@@ -123,19 +125,23 @@ class ProfileFragmentState extends State<ProfileFragment> {
                 leading: const Icon(FontAwesome.language),
                 trailing: Row(
                   children: [
-                    Image.asset(selectedLanguageDataModel!.flag.validate(), height: 25, width: 25),
+                    Image.asset(selectedLanguageDataModel!.flag.validate(),
+                        height: 25, width: 25),
                     4.width,
-                    Text(selectedLanguageDataModel!.name.validate(), style: boldTextStyle()),
+                    Text(selectedLanguageDataModel!.name.validate(),
+                        style: boldTextStyle()),
                   ],
                 ),
                 onTap: () async {
                   await StatefulBuilder(builder: (context, setState) {
                     return Scaffold(
-                      appBar: appBarWidget(appStore.translate('app_lang'), color: context.cardColor),
+                      appBar: appBarWidget(appStore.translate('app_lang'),
+                          color: context.cardColor),
                       body: LanguageListWidget(
                         onLanguageChange: (val) async {
                           appStore.setLanguage(val.languageCode.validate());
-                          await setValue(SELECTED_LANGUAGE_CODE, val.languageCode);
+                          await setValue(
+                              SELECTED_LANGUAGE_CODE, val.languageCode);
 
                           finish(context);
                         },
@@ -148,46 +154,16 @@ class ProfileFragmentState extends State<ProfileFragment> {
               ),
               const Divider(height: 0),
               SettingItemWidget(
-                leading: Icon(Icons.share_outlined),
+                leading: const Icon(Icons.share_outlined),
                 title: '${appStore.translate('share')} $mAppName',
                 onTap: () {
                   PackageInfo.fromPlatform().then((value) {
                     String package = '';
                     if (isAndroid) package = value.packageName;
 
-                    Share.share('${appStore.translate('share')} $mAppName\n\n${storeBaseURL()}$package');
+                    Share.share(
+                        '${appStore.translate('share')} $mAppName\n\n${storeBaseURL()}$package');
                   });
-                },
-              ),
-              Divider(height: 0),
-              SettingItemWidget(
-                leading: Icon(Icons.assignment_outlined),
-                title: appStore.translate('term_condition'),
-                onTap: () {
-                  launchUrl(Privacy_Policy, forceWebView: true);
-                },
-              ),
-              const Divider(height: 0),
-              SettingItemWidget(
-                leading: const Icon(Icons.rate_review_outlined),
-                title: appStore.translate('rate_us'),
-                onTap: () {
-                  PackageInfo.fromPlatform().then((value) {
-                    String package = '';
-                    if (isAndroid) {
-                      package = value.packageName;
-
-                      launchUrl('$playStoreBaseURL$package');
-                    }
-                  });
-                },
-              ),
-              const Divider(height: 0),
-              SettingItemWidget(
-                leading: const Icon(Icons.assessment_outlined),
-                title: appStore.translate('privacy_policy'),
-                onTap: () {
-                  launchUrl(Privacy_Policy, forceWebView: true);
                 },
               ),
               const Divider(height: 0),
@@ -196,14 +172,6 @@ class ProfileFragmentState extends State<ProfileFragment> {
                 title: appStore.translate('help_support'),
                 onTap: () {
                   AppFunctions.launchWhatsApp();
-                },
-              ),
-              const Divider(height: 0),
-              SettingItemWidget(
-                leading: const Icon(Icons.info_outline),
-                title: appStore.translate('about'),
-                onTap: () {
-                  AboutAppScreen().launch(context);
                 },
               ),
               const Divider(height: 0),
@@ -217,14 +185,13 @@ class ProfileFragmentState extends State<ProfileFragment> {
                     negativeText: appStore.translate('no'),
                     positiveText: appStore.translate('yes'),
                   );
-
                   if (res ?? false) {
                     logout().then((value) {
-                      LoginScreen().launch(context, isNewTask: true);
+                      const LoginScreen().launch(context, isNewTask: true);
                     });
                   }
                 },
-              ).visible(appStore.isLoggedIn),
+              ),
             ],
           ),
         ),

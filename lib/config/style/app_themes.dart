@@ -29,18 +29,18 @@ class AppTheme {
         fontSize: 10.sp,
       ),
     ),
-    iconTheme: IconThemeData(color: AppColors.scaffoldSecondaryDark),
+    iconTheme: IconThemeData(color: AppColors.scaffoldColor),
     textTheme: const TextTheme(titleLarge: TextStyle(fontSize: 14)),
     dialogBackgroundColor: Colors.white,
     unselectedWidgetColor: Colors.black,
     dividerColor: AppColors.vWhite,
     cardColor: Colors.white,
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.white,
-      titleTextStyle: TextStyle(fontSize: 18),
+    appBarTheme: AppBarTheme(
+      backgroundColor: AppColors.scaffoldColor,
+      titleTextStyle: const TextStyle(fontSize: 18),
       // brightness: Brightness.light,
       systemOverlayStyle:
-          SystemUiOverlayStyle(statusBarIconBrightness: Brightness.light),
+          const SystemUiOverlayStyle(statusBarIconBrightness: Brightness.light),
     ),
     dialogTheme: DialogTheme(shape: dialogShape()),
   ).copyWith(

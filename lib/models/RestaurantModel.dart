@@ -12,8 +12,8 @@ class RestaurantModel {
   final bool? isVegRestaurant;
   final bool? isNonVegRestaurant;
   final bool? isDealOfTheDay;
-  final String? couponCode;
-  final String? couponDesc;
+  final String? voucher;
+  final String? voucherCount;
   final List<String>? caseSearch;
   final String? restaurantDesc;
   final List<String>? catList;
@@ -33,8 +33,8 @@ class RestaurantModel {
     this.isVegRestaurant,
     this.isNonVegRestaurant,
     this.isDealOfTheDay,
-    this.couponCode,
-    this.couponDesc,
+    this.voucher,
+    this.voucherCount,
     this.caseSearch,
     this.restaurantDesc,
     this.catList,
@@ -56,8 +56,8 @@ class RestaurantModel {
       isVegRestaurant: json[RestaurantKeys.isVegRestaurant],
       isNonVegRestaurant: json[RestaurantKeys.isNonVegRestaurant],
       isDealOfTheDay: json[RestaurantKeys.isDealOfTheDay],
-      couponCode: json[RestaurantKeys.couponCode],
-      couponDesc: json[RestaurantKeys.couponDesc],
+      voucher: json[RestaurantKeys.voucher],
+      voucherCount: json[RestaurantKeys.voucherCount],
       caseSearch: json[RestaurantKeys.caseSearch] != null ? List<String>.from(json[RestaurantKeys.caseSearch]) : null,
       createdAt: json[CommonKeys.createdAt] != null ? (json[CommonKeys.createdAt] as Timestamp).toDate() : null,
       updatedAt: json[CommonKeys.updatedAt] != null ? (json[CommonKeys.updatedAt] as Timestamp).toDate() : null,
@@ -82,8 +82,8 @@ class RestaurantModel {
     data[CommonKeys.createdAt] = createdAt;
     data[CommonKeys.updatedAt] = updatedAt;
     data[RestaurantKeys.isDealOfTheDay] = isDealOfTheDay;
-    data[RestaurantKeys.couponCode] = couponCode;
-    data[RestaurantKeys.couponDesc] = couponDesc;
+    data[RestaurantKeys.voucher] = voucher;
+    data[RestaurantKeys.voucherCount] = voucherCount;
     data[RestaurantKeys.caseSearch] = caseSearch;
     data[RestaurantKeys.restaurantDesc] = restaurantDesc;
     data[RestaurantKeys.catList] = catList;

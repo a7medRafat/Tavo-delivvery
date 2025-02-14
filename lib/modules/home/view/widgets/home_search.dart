@@ -16,31 +16,31 @@ class HomeSearch extends StatelessWidget {
       children: <Widget>[
         Consumer<HomeViewModel>(
           builder: (BuildContext context, value, Widget? child) {
-            return AppContainer(
-              borderRadius: BorderRadius.circular(30),
-              border: Border.all(color: viewLineColor),
-              child: DefaultField(
-                controller: value.searchCont,
-                prefixIcon: Icon(
-                  Icons.search,
+            return DefaultField(
+              controller: value.searchCont,
+              prefixIcon: Icon(Icons.search,
                   color: appStore.isDarkMode
-                      ? Colors.white
-                      : AppColors.scaffoldSecondaryDark,
-                ),
-                suffixIcon: value.searchText.isNotEmpty ? Icons.clear : null,
-                suffixPressed: () => value.clearSearch(),
-                hint: appStore.translate('search_restaurant'),
-                isPassword: false,
-                textInputType: TextInputType.text,
-                borderRadius: BorderRadius.circular(5),
-                onChanged: (val) {
-                  value.setSearchText(val);
-                },
-                onSubmitted: (s) {
-                  hideKeyboard(context);
-                },
-                validation: (val) {},
-              ),
+                      ? AppColors.whiteColor
+                      : AppColors.scaffoldSecondaryDark),
+              suffixIcon: value.searchText.isNotEmpty ? Icons.clear : null,
+              suffixPressed: () => value.clearSearch(),
+              hint: appStore.translate('search_restaurant'),
+              isPassword: false,
+              textColor: appStore.isDarkMode
+                  ? AppColors.whiteColor
+                  : AppColors.scaffoldSecondaryDark,
+              fillColor: appStore.isDarkMode
+                  ? AppColors.scaffoldSecondaryDark
+                  : Colors.white,
+              textInputType: TextInputType.text,
+              borderRadius: BorderRadius.circular(5),
+              onChanged: (val) {
+                value.setSearchText(val);
+              },
+              onSubmitted: (s) {
+                hideKeyboard(context);
+              },
+              validation: (val) {},
             ).expand();
           },
         ),

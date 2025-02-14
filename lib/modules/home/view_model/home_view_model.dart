@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:fooddelivery/core/functions/app_functions.dart';
 import 'package:fooddelivery/main.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:fooddelivery/utils/functions.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:paginate_firestore/bloc/pagination_listeners.dart';
 

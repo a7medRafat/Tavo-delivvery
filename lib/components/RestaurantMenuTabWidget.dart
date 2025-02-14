@@ -26,16 +26,6 @@ class RestaurantMenuTabWidgetState extends State<RestaurantMenuTabWidget> {
   UniqueKey uniqueKey = UniqueKey();
 
   @override
-  void initState() {
-    super.initState();
-    init();
-  }
-
-  init() async {
-    //
-  }
-
-  @override
   void setState(fn) {
     if (mounted) super.setState(fn);
   }

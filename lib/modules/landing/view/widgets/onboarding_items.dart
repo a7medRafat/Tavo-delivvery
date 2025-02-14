@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fooddelivery/config/colors/app_colors.dart';
 import 'package:fooddelivery/config/style/app_fonts.dart';
 
@@ -17,7 +18,7 @@ class OnboardingItems extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Center(
+          Expanded(
             child: Image.asset(
               imageName,
               width: MediaQuery.of(context).size.width,

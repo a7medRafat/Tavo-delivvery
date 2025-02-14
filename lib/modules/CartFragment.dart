@@ -20,16 +20,6 @@ class CartFragment extends StatefulWidget {
 
 class CartFragmentState extends State<CartFragment> {
   @override
-  void initState() {
-    super.initState();
-    init();
-  }
-
-  Future<void> init() async {
-    //
-  }
-
-  @override
   void dispose() {
     super.dispose();
   }
@@ -43,51 +33,56 @@ class CartFragmentState extends State<CartFragment> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: appStore.isDarkMode ? scaffoldColorDark : Colors.white,
-      appBar: appBarWidget(appStore.translate('cart'),
-          showBack: false,
-          elevation: 0,
-          textSize: 20,
-          color: appStore.isDarkMode ? scaffoldColorDark : Colors.white),
+      appBar: appBarWidget(
+        appStore.translate('cart'),
+        showBack: false,
+        elevation: 0,
+        textSize: 20,
+        color: appStore.isDarkMode ? scaffoldColorDark : Colors.white,
+      ),
       body: Stack(
         children: [
-          StreamBuilder<List<MenuModel>>(
-            stream: myCartDBService.cartList(),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Text(snapshot.error.toString()).center();
-              }
-              if (snapshot.hasData) {
-                if (snapshot.data!.isEmpty) {
-                  return noDataWidget(
-                          errorMessage: appStore.translate('noDataFound'))
-                      .center();
-                } else {
-                  return ListView.builder(
-                    padding:
-                        const EdgeInsets.only(top: 16, bottom: 16, right: 16),
-                    itemBuilder: (context, index) => CartItemComponent(
-                      cartData: snapshot.data![index],
-                      onUpdate: () {
-                        setState(() {});
-                      },
-                    ),
-                    physics: const BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: snapshot.data!.length,
-                  );
-                }
-              }
-              return Loader().center();
-            },
-          ),
+          appStore.isLoggedIn
+              ? StreamBuilder<List<MenuModel>>(
+                  stream: myCartDBService.cartList(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}').center();
+                    }
+                    if (!snapshot.hasData) {
+                      return Loader().center();
+                    }
+                    if (snapshot.data!.isEmpty) {
+                      return noDataWidget(
+                        errorMessage: appStore.translate('noDataFound'),
+                      ).center();
+                    }
+                    return ListView.builder(
+                      padding:
+                          const EdgeInsets.only(top: 16, bottom: 16, right: 16),
+                      itemBuilder: (context, index) => CartItemComponent(
+                        cartData: snapshot.data![index],
+                        onUpdate: () {
+                          setState(() {});
+                        },
+                      ),
+                      physics: const BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.length,
+                    );
+                  },
+                )
+              : noDataWidget(
+                  errorMessage: appStore.translate('noDataFound'),
+                ).center(),
           Observer(
             builder: (_) => viewCartWidget(
-                    context: context,
-                    totalItemLength: '${appStore.mCartList.length}',
-                    onTap: () async {
-                      MyOrderScreen().launch(context);
-                    })
-                .visible(appStore.mCartList.isNotEmpty && appStore.isLoggedIn),
+              context: context,
+              totalItemLength: '${appStore.mCartList.length}',
+              onTap: () async {
+                MyOrderScreen().launch(context);
+              },
+            ).visible(appStore.mCartList.isNotEmpty && appStore.isLoggedIn),
           ),
         ],
       ),

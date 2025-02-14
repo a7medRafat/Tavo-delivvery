@@ -72,7 +72,7 @@ class OrderTrackingScreenState extends State<OrderTrackingScreen> {
       deliveryBoyLocation = LatLng(widget.orderData!.deliveryBoyLocation!.latitude, widget.orderData!.deliveryBoyLocation!.longitude);
       _markers.clear();
       _markers.add(Marker(
-        markerId: MarkerId('Order Tracking'),
+        markerId: const MarkerId('Order Tracking'),
         position: deliveryBoyLocation,
         icon: pinLocationIcon,
       ));
@@ -91,7 +91,7 @@ class OrderTrackingScreenState extends State<OrderTrackingScreen> {
           context,
           barrierDismissible: true,
           child: DeliveryBoyReviewDialog(order: widget.orderData),
-          contentPadding: EdgeInsets.all(0),
+          contentPadding: const EdgeInsets.all(0),
           shape: RoundedRectangleBorder(borderRadius: radius(16)),
         );
       }
@@ -162,7 +162,7 @@ class OrderTrackingScreenState extends State<OrderTrackingScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      padding: EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
+                      padding: const EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
                       decoration: boxDecorationWithRoundedCorners(
                         borderRadius: radius(8),
                         backgroundColor: getOrderStatusColor(widget.orderData!.orderStatus).withOpacity(0.05),

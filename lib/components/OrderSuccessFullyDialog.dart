@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/main.dart';
 import 'package:fooddelivery/modules/DashboardScreen.dart';
+import 'package:fooddelivery/modules/layout/view/layout_screen.dart';
 import 'package:fooddelivery/utils/Colors.dart';
 import 'package:fooddelivery/utils/Common.dart';
 import 'package:fooddelivery/utils/Constants.dart';
@@ -8,6 +9,8 @@ import 'package:nb_utils/nb_utils.dart';
 
 class OrderSuccessFullyDialog extends StatefulWidget {
   static String tag = '/OrderSuccessFullyDialog';
+
+  const OrderSuccessFullyDialog({super.key});
 
   @override
   OrderSuccessFullyDialogState createState() => OrderSuccessFullyDialogState();
@@ -56,7 +59,7 @@ class OrderSuccessFullyDialogState extends State<OrderSuccessFullyDialog> {
           color: colorPrimary,
           child: Text(appStore.translate('continue'), style: boldTextStyle(color: Colors.white)),
           onTap: () {
-            DashboardScreen().launch(context, isNewTask: true);
+            AppLayout().launch(context, isNewTask: true);
           },
         ).paddingOnly(left: 8, right: 8, bottom: 30)
       ],

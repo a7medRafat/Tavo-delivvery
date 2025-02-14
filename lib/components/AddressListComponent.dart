@@ -19,23 +19,15 @@ class AddressListComponent extends StatefulWidget {
 }
 
 class AddressListComponentState extends State<AddressListComponent> {
-  @override
-  void initState() {
-    super.initState();
-    init();
-  }
-
-  Future<void> init() async {
-    //
-  }
-
   Future removeAddress(int index) async {
     appStore.setLoading(true);
 
     widget.userData!.listOfAddress!.removeAt(index);
     widget.userData!.updatedAt = DateTime.now();
 
-    await userDBService.updateDocument(widget.userData!.toJson(), appStore.userId).then((value) {
+    await userDBService
+        .updateDocument(widget.userData!.toJson(), appStore.userId)
+        .then((value) {
       toast(appStore.translate('removed'));
 
       appStore.setLoading(false);
@@ -53,7 +45,11 @@ class AddressListComponentState extends State<AddressListComponent> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.userData!.listOfAddress.validate().isEmpty) return Text(appStore.translate('no_address_found'), style: secondaryTextStyle()).center();
+    if (widget.userData!.listOfAddress.validate().isEmpty) {
+      return Text(appStore.translate('no_address_found'),
+              style: secondaryTextStyle())
+          .center();
+    }
 
     return ListView.builder(
       padding: const EdgeInsets.all(8),
@@ -66,21 +62,28 @@ class AddressListComponentState extends State<AddressListComponent> {
           decoration: boxDecorationWithShadow(
             borderRadius: radius(12),
             boxShadow: defaultBoxShadow(),
-            backgroundColor: appStore.isDarkMode ? scaffoldSecondaryDark : Colors.white,
+            backgroundColor:
+                appStore.isDarkMode ? scaffoldSecondaryDark : Colors.white,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(addressModel.address.validate(), style: boldTextStyle(size: 14), maxLines: 3, overflow: TextOverflow.ellipsis),
+              Text(addressModel.address.validate(),
+                  style: boldTextStyle(size: 14),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis),
               4.height,
-              Text(addressModel.otherDetails.validate(), style: secondaryTextStyle()),
+              Text(addressModel.otherDetails.validate(),
+                  style: secondaryTextStyle()),
               8.height,
               Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   const Icon(Icons.delete, color: colorPrimary).onTap(() {
-                    showConfirmDialog(context, appStore.translate('delete_address_confirmation')).then((value) {
+                    showConfirmDialog(context,
+                            appStore.translate('delete_address_confirmation'))
+                        .then((value) {
                       if (value ?? false) {
                         removeAddress(index);
                       }
@@ -99,7 +102,7 @@ class AddressListComponentState extends State<AddressListComponent> {
       },
       itemCount: widget.userData!.listOfAddress.validate().length,
       shrinkWrap: true,
-      physics: ClampingScrollPhysics(),
+      physics: const ClampingScrollPhysics(),
     );
   }
 }

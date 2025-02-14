@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fooddelivery/config/colors/app_colors.dart';
-import 'package:fooddelivery/config/style/app_fonts.dart';
 import 'package:fooddelivery/core/shared_widgets/app_bar.dart';
 import 'package:fooddelivery/core/utils/paginate_firestore.dart';
 import 'package:fooddelivery/main.dart';
@@ -17,8 +15,10 @@ class OrdersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
-          title: Text(appStore.translate('orders'),
-              style: AppFonts.headline1.copyWith(color: AppColors.darkGray))),
+        title: Text(
+          appStore.translate('orders'),
+        ),
+      ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: GenericPaginateFireStore<OrderModel>(

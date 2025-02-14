@@ -20,8 +20,13 @@ class SalomonBottomNav extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
       child: SalomonBottomBar(
         currentIndex: currentIndex,
+        unselectedItemColor: appStore.isDarkMode
+            ? AppColors.scaffoldColor
+            : AppColors.scaffoldSecondaryDark,
         onTap: onTap,
-        backgroundColor: AppColors.scaffoldColor,
+        backgroundColor: appStore.isDarkMode
+            ? AppColors.scaffoldSecondaryDark
+            : AppColors.scaffoldColor,
         items: [
           SalomonBottomBarItem(
             icon: const Icon(Icons.home, size: 20),

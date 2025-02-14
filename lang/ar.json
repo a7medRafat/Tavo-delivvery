@@ -149,5 +149,8 @@
   "no": "لا",
   "order_not_found": "لم يتم العثور على الطلب",
   "delivery_charges": "رسوم التوصيل",
-  "currency": "جنية"
+  "currency": "جنية",
+  "vodafoneCash": "فودافون كاش",
+  "cashOnDelivery": "الدفع عند التوصيل"
+
 }

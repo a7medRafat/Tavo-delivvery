@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:fooddelivery/modules/layout/view/layout_screen.dart';
 import 'package:fooddelivery/services/AuthService.dart';
 import 'package:fooddelivery/utils/Colors.dart';
 import 'package:fooddelivery/utils/Common.dart';
@@ -61,9 +62,8 @@ class RegisterScreenState extends State<RegisterScreen> {
           passwordController.text.trim(),
           phoneController.text,
         );
-        await DashboardScreen().launch(context, isNewTask: true);
+        await const AppLayout().launch(context, isNewTask: true);
       } catch (e) {
-        print('====================================');
         print(e);
         toast(e.toString());
       } finally {
@@ -88,12 +88,13 @@ class RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: appStore.isDarkMode ? scaffoldColorDark : Colors.white,
-      appBar: appBarWidget(appStore.translate('register'), color: context.cardColor),
+      appBar: appBarWidget(appStore.translate('register'),
+          color: context.cardColor),
       body: Container(
         child: Stack(
           children: [
             SingleChildScrollView(
-              padding: EdgeInsets.symmetric(vertical: 16),
+              padding: const EdgeInsets.symmetric(vertical: 16),
               child: Form(
                 key: formKey,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -105,8 +106,10 @@ class RegisterScreenState extends State<RegisterScreen> {
                         AppTextField(
                           controller: nameController,
                           textFieldType: TextFieldType.NAME,
-                          errorThisFieldRequired: appStore.translate('this_field_is_required'),
-                          decoration: inputDecoration(labelText: appStore.translate('full_name')),
+                          errorThisFieldRequired:
+                              appStore.translate('this_field_is_required'),
+                          decoration: inputDecoration(
+                              labelText: appStore.translate('full_name')),
                           nextFocus: emailFocus,
                           textStyle: primaryTextStyle(),
                         ),
@@ -115,8 +118,10 @@ class RegisterScreenState extends State<RegisterScreen> {
                           controller: emailController,
                           textFieldType: TextFieldType.EMAIL,
                           focus: emailFocus,
-                          errorThisFieldRequired: appStore.translate('this_field_is_required'),
-                          decoration: inputDecoration(labelText: appStore.translate('email')),
+                          errorThisFieldRequired:
+                              appStore.translate('this_field_is_required'),
+                          decoration: inputDecoration(
+                              labelText: appStore.translate('email')),
                           nextFocus: phoneFocus,
                           textStyle: primaryTextStyle(),
                           suffixIconColor: colorPrimary,
@@ -126,11 +131,14 @@ class RegisterScreenState extends State<RegisterScreen> {
                           controller: phoneController,
                           textFieldType: TextFieldType.PHONE,
                           focus: phoneFocus,
-                          maxLength: 10,
+                          maxLength: 11,
                           nextFocus: passFocus,
-                          errorThisFieldRequired: appStore.translate('this_field_is_required'),
-                          decoration: inputDecoration(labelText: appStore.translate('phone_number')).copyWith(counterText: ''),
-                          autoFillHints: [AutofillHints.newPassword],
+                          errorThisFieldRequired:
+                              appStore.translate('this_field_is_required'),
+                          decoration: inputDecoration(
+                                  labelText: appStore.translate('phone_number'))
+                              .copyWith(counterText: '+20'),
+                          autoFillHints: const [AutofillHints.newPassword],
                         ),
                         16.height,
                         AppTextField(
@@ -138,9 +146,12 @@ class RegisterScreenState extends State<RegisterScreen> {
                           textFieldType: TextFieldType.PASSWORD,
                           focus: passFocus,
                           nextFocus: confirmPasswordFocus,
-                          errorThisFieldRequired: appStore.translate('this_field_is_required'),
-                          errorMinimumPasswordLength: appStore.translate('minimum_password_length'),
-                          decoration: inputDecoration(labelText: appStore.translate('password')),
+                          errorThisFieldRequired:
+                              appStore.translate('this_field_is_required'),
+                          errorMinimumPasswordLength:
+                              appStore.translate('minimum_password_length'),
+                          decoration: inputDecoration(
+                              labelText: appStore.translate('password')),
                           autoFillHints: [AutofillHints.newPassword],
                         ),
                         16.height,
@@ -148,14 +159,21 @@ class RegisterScreenState extends State<RegisterScreen> {
                           controller: confirmPasswordController,
                           textFieldType: TextFieldType.PASSWORD,
                           focus: confirmPasswordFocus,
-                          decoration: inputDecoration(labelText: appStore.translate('confirm_password')),
+                          decoration: inputDecoration(
+                              labelText:
+                                  appStore.translate('confirm_password')),
                           onFieldSubmitted: (s) {
                             signUp();
                           },
                           validator: (value) {
-                            if (value!.trim().isEmpty) return appStore.translate('this_field_is_required');
-                            if (value.trim().length < passwordLengthGlobal) return appStore.translate('password_length');
-                            return passwordController.text == value.trim() ? null : appStore.translate('password_not_match');
+                            if (value!.trim().isEmpty)
+                              return appStore
+                                  .translate('this_field_is_required');
+                            if (value.trim().length < passwordLengthGlobal)
+                              return appStore.translate('password_length');
+                            return passwordController.text == value.trim()
+                                ? null
+                                : appStore.translate('password_not_match');
                           },
                           autoFillHints: [AutofillHints.newPassword],
                         ),
@@ -175,8 +193,10 @@ class RegisterScreenState extends State<RegisterScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(appStore.translate('sign_up').toUpperCase(), style: primaryTextStyle(color: Colors.white)),
-                            const Icon(Icons.navigate_next, color: Colors.white),
+                            Text(appStore.translate('sign_up').toUpperCase(),
+                                style: primaryTextStyle(color: Colors.white)),
+                            const Icon(Icons.navigate_next,
+                                color: Colors.white),
                           ],
                         ),
                       ).onTap(() {
@@ -200,8 +220,12 @@ class RegisterScreenState extends State<RegisterScreen> {
               alignment: Alignment.bottomCenter,
               child: createRichText(
                 list: [
-                  TextSpan(text: appStore.translate('have_an_account'), style: primaryTextStyle()),
-                  TextSpan(text: appStore.translate('sign_in'), style: primaryTextStyle(color: colorPrimary)),
+                  TextSpan(
+                      text: appStore.translate('have_an_account'),
+                      style: primaryTextStyle()),
+                  TextSpan(
+                      text: appStore.translate('sign_in'),
+                      style: primaryTextStyle(color: colorPrimary)),
                 ],
               ).onTap(() {
                 finish(context);

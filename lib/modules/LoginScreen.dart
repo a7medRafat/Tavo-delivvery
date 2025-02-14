@@ -55,7 +55,7 @@ class LoginScreenState extends State<LoginScreen> {
       if (getStringAsync(PHONE_NUMBER).isNotEmpty) {
         const AppLayout().launch(context, isNewTask: true);
       } else {
-        AddPhoneNumberScreen().launch(context);
+        const AddPhoneNumberScreen().launch(context);
       }
     }).catchError((e) {
       toast(errorMessage);

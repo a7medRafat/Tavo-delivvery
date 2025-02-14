@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:fooddelivery/components/CartItemComponent.dart';
 import 'package:fooddelivery/config/colors/app_colors.dart';
-import 'package:fooddelivery/config/style/app_fonts.dart';
 import 'package:fooddelivery/core/shared_widgets/app_bar.dart';
 import 'package:fooddelivery/models/MenuModel.dart';
 import 'package:fooddelivery/utils/Colors.dart';
@@ -33,7 +32,6 @@ class CartScreenState extends State<CartScreen> {
   }
 
   Future<void> init() async {
-    await 1.seconds.delay;
     setStatusBarColor(
       appStore.isDarkMode ? scaffoldColorDark : colorPrimary,
     );
@@ -60,8 +58,10 @@ class CartScreenState extends State<CartScreen> {
     return Scaffold(
       backgroundColor: AppColors.scaffoldColor,
       appBar: MyAppBar(
-          title: Text(appStore.translate('cart'),
-              style: AppFonts.headline1.copyWith(color: AppColors.darkGray))),
+        title: Text(
+          appStore.translate('cart'),
+        ),
+      ),
       body: Stack(
         children: [
           StreamBuilder<List<MenuModel>>(
@@ -88,7 +88,7 @@ class CartScreenState extends State<CartScreen> {
                         setState(() {});
                       },
                     ),
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: snapshot.data!.length,
                   );

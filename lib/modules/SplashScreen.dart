@@ -6,7 +6,6 @@ import 'package:fooddelivery/utils/Colors.dart';
 import 'package:fooddelivery/utils/Constants.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'LoginScreen.dart';
-import 'WalkThroughScreen.dart';
 
 class SplashScreen extends StatefulWidget {
   static String tag = '/SplashScreen';
@@ -30,11 +29,12 @@ class SplashScreenState extends State<SplashScreen> {
 
     setStatusBarColor(
       appStore.isDarkMode ? scaffoldColorDark : Colors.transparent,
-      statusBarIconBrightness: appStore.isDarkMode ? Brightness.light : Brightness.light,
+      statusBarIconBrightness:
+          appStore.isDarkMode ? Brightness.light : Brightness.light,
     );
 
     if (getBoolAsync(IS_FIRST_TIME, defaultValue: true)) {
-      WalkThroughScreen().launch(context, isNewTask: true);
+      const LandingScreen().launch(context, isNewTask: true);
     } else {
       if (appStore.isLoggedIn) {
         appStore.clearCart();
@@ -43,12 +43,11 @@ class SplashScreenState extends State<SplashScreen> {
             appStore.addToCart(element);
           }
         });
-
         await setFavouriteRestaurant();
 
         const LandingScreen().launch(context, isNewTask: true);
       } else {
-        LoginScreen().launch(context, isNewTask: true);
+        const LoginScreen().launch(context, isNewTask: true);
       }
     }
   }
@@ -66,8 +65,11 @@ class SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: appStore.isDarkMode ? scaffoldSecondaryDark : colorPrimary,
-      body: Text(mAppName, style: primaryTextStyle(size: 36, color: Colors.white)).center(),
+      backgroundColor:
+          appStore.isDarkMode ? scaffoldSecondaryDark : colorPrimary,
+      body:
+          Text(mAppName, style: primaryTextStyle(size: 36, color: Colors.white))
+              .center(),
     );
   }
 }

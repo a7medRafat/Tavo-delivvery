@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fooddelivery/config/colors/app_colors.dart';
 import 'package:fooddelivery/config/style/app_fonts.dart';
 
 class DefaultField extends StatelessWidget {
@@ -10,6 +11,8 @@ class DefaultField extends StatelessWidget {
   final Widget? suffixIconBtn;
   final Widget? suffixTextBtn;
   final Color? suffixIconColor;
+  final Color? fillColor;
+  final Color? textColor;
   final bool isPassword;
   final TextInputType textInputType;
   final Function()? suffixPressed;
@@ -42,6 +45,8 @@ class DefaultField extends StatelessWidget {
     required this.borderRadius,
     this.isRead = false,
     this.onSubmitted,
+    this.fillColor,
+    this.textColor,
   });
 
   @override
@@ -52,7 +57,7 @@ class DefaultField extends StatelessWidget {
       keyboardType: textInputType,
       validator: validation,
       obscureText: isPassword,
-      style: AppFonts.bodyText3,
+      style: AppFonts.bodyText3.copyWith(color: textColor),
       controller: controller,
       onFieldSubmitted: onSubmitted,
       decoration: InputDecoration(
@@ -63,12 +68,16 @@ class DefaultField extends StatelessWidget {
         prefixIcon: prefixIcon,
         suffixIcon: IconButton(
             onPressed: suffixPressed,
-            icon: Icon(suffixIcon, color: suffixIconColor,size: 15,)),
+            icon: Icon(
+              suffixIcon,
+              color: suffixIconColor,
+              size: 15,
+            )),
         suffixText: suffixText,
         hintText: hint,
         hintStyle: AppFonts.regular1,
         filled: true,
-        fillColor: Colors.white,
+        fillColor: fillColor ?? Colors.white,
       ),
     );
   }

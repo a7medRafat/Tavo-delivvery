@@ -10,10 +10,13 @@ class MyCartDBService extends BaseService {
   }
 
   Stream<List<MenuModel>> cartList() {
-    return ref.snapshots().map((x) => x.docs.map((y) => MenuModel.fromJson(y.data() as Map<String, dynamic>)).toList());
+    return db.collection('cart').snapshots().map((snapshot) =>
+        snapshot.docs.map((doc) => MenuModel.fromJson(doc.data())).toList());
   }
 
   Future<List<MenuModel>> getCartList() async {
-    return await ref.get().then((x) => x.docs.map((y) => MenuModel.fromJson(y.data() as Map<String, dynamic>)).toList());
+    return await ref.get().then((x) => x.docs
+        .map((y) => MenuModel.fromJson(y.data() as Map<String, dynamic>))
+        .toList());
   }
 }

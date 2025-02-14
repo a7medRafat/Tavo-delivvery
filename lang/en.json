@@ -149,5 +149,7 @@
   "no": "No",
   "order_not_found": "Order not found",
   "delivery_charges": "Delivery Charges",
-  "currency": "LE"
+  "currency": "LE",
+  "vodafoneCash": "vodafone cash",
+  "cashOnDelivery": "cash on delivery"
 }
